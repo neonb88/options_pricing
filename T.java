@@ -27,17 +27,18 @@ public class T {
             optionPrice = Double.parseDouble(args[1]);
             numTrials = Integer.parseInt(args[2]);
             avgFluctuation = Double.parseDouble(args[3]);
-        } catch (Exception e) { usage(); }
 
-        double profit = -optionPrice * numTrials;
+            double profit = -optionPrice * numTrials; // we spent this much to buy   numTrials # of stock options
+            System.out.println("initial profit was " + profit);
 
-        for (int i = 0; i < numTrials; ++i) {
-            if (stockPriceExceeds(MAX, optionPrice)) {
-                ++count;
+            for (int i = 0; i < numTrials; ++i) {
+                profit += maxProfit(optionPrice, numDays, avgFluctuation);
             }
-        }
+            System.out.println("   profits over " + numTrials + " days were " + profit);
 
-        System.out.println("  price exceeded... " + count + " times out of " + numTrials);
+        } catch (Exception e) { // parse failed
+            usage(); 
+        }
     }
 
     /**
@@ -85,9 +86,18 @@ public class T {
         Random rand = new Random();
 
         for (int day = 0; day < numDays; ++day) {
-
+            double priceChange = rand.nextDouble() * avgFluctuation * 2; // always positive
+            priceChange = priceChange - (priceChange / 2.0); // allow negative
+            currPrice += priceChange;
+            if (currPrice > maxProfit) {
+                maxProfit = currPrice;
+            }
         }
 
+        if (SHOW) {
+            System.out.println(" max profit was  " + maxProfit);
+        }
+        return maxProfit;
     }
 
     /**
@@ -96,12 +106,13 @@ public class T {
      */
     public static void usage() {
         System.out.println(" Usage:");
-        System.out.println("     java ... numDays optionPrice numTrials avgFluctuation");
-        System.out.println(" ie. java ...    1000       10.00         1           5.00");
+        System.out.println("     java T numDays optionPrice numTrials avgFluctuation");
+        System.out.println(" ie. java T      10       10.00       100           5.00");
 
     }
 
     public static int MAX = 7;
     public static int AVG_FLUCTUATION = 5;
+    public static boolean SHOW = true;
 }
 
