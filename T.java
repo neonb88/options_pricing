@@ -27,9 +27,9 @@ public class T {
             optionPrice = Double.parseDouble(args[1]);
             numTrials = Integer.parseInt(args[2]);
             avgFluctuation = Double.parseDouble(args[3]);
-        } catch (Exception e) {
-            usage();
-        }
+        } catch (Exception e) { usage(); }
+
+        double profit = -optionPrice * numTrials;
 
         for (int i = 0; i < numTrials; ++i) {
             if (stockPriceExceeds(MAX, optionPrice)) {
@@ -49,6 +49,9 @@ public class T {
 
           **********************************************************************************************************************
                 The real f*cking question is this:   how do we know when to sell and when to let the stock keep rising?
+          **********************************************************************************************************************
+                            And that question is one that can only be answered by financial data
+                                            NOT theoretically
           **********************************************************************************************************************
      *
      */
@@ -71,6 +74,26 @@ public class T {
         return costExceeded;
     }
 
+    /**
+     *  Disclaimer: (!!! important to remember !!!)  Supposing we could   A) *** PREDICT PERFECTLY *** (which we can't) and that   B) future stock movements can be approximated by taking the average movement over a past few days and taking a "random walk" (uniform distribution) with the same average daily price movement,  what is the max profit we could make
+     *
+     */
+    public static double maxProfit(double optionPrice, int numDays, double avgFluctuation) {
+        double maxProfit = 0.0;
+        double currPrice = 0.0;
+
+        Random rand = new Random();
+
+        for (int day = 0; day < numDays; ++day) {
+
+        }
+
+    }
+
+    /**
+     * Tells the program's user how to input arguments
+     *
+     */
     public static void usage() {
         System.out.println(" Usage:");
         System.out.println("     java ... numDays optionPrice numTrials avgFluctuation");
